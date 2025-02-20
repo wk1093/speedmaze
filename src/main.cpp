@@ -201,27 +201,32 @@ void displayMaze(Maze maze, Player player, Camera* cam, Player nav, bool checkex
     cam->xoffset = 0;
     cam->yoffset = 0;
 
+    Player pl = player;
+    if (nav.x != -1 && nav.y != -1) {
+        pl = nav;
+    }
+
     if (maze.width < scrwidth) {
         cam->xoffset = 0;
     } else {
-        if (player.x < scrwidth / 2) {
+        if (pl.x < scrwidth / 2) {
             cam->xoffset = 0;
-        } else if (player.x > maze.width - scrwidth / 2) {
+        } else if (pl.x > maze.width - scrwidth / 2) {
             cam->xoffset = maze.width - scrwidth + 1;
         } else {
-            cam->xoffset = player.x - scrwidth / 2;
+            cam->xoffset = pl.x - scrwidth / 2;
         }
     }
 
     if (maze.height < scrheight) {
         cam->yoffset = 0;
     } else {
-        if (player.y < scrheight / 2) {
+        if (pl.y < scrheight / 2) {
             cam->yoffset = 0;
-        } else if (player.y > maze.height - scrheight / 2) {
+        } else if (pl.y > maze.height - scrheight / 2) {
             cam->yoffset = maze.height - scrheight + 1;
         } else {
-            cam->yoffset = player.y - scrheight / 2;
+            cam->yoffset = pl.y - scrheight / 2;
         }
     }
 
@@ -239,6 +244,14 @@ void displayMaze(Maze maze, Player player, Camera* cam, Player nav, bool checkex
                 continue;
             }
 
+            if (nav.x == realx && nav.y == realy) {
+                attron(COLOR_PAIR(4));
+                mvaddch(y, x * 2, '[');
+                mvaddch(y, x * 2 + 1, ']');
+                attroff(COLOR_PAIR(4));
+                continue;
+            }
+
             if (player.x == realx && player.y == realy) {
                 attron(COLOR_PAIR(2));
                 mvaddch(y, x * 2, '[');
@@ -247,13 +260,6 @@ void displayMaze(Maze maze, Player player, Camera* cam, Player nav, bool checkex
                 continue;
             }
 
-            if (nav.x == realx && nav.y == realy) {
-                attron(COLOR_PAIR(4));
-                mvaddch(y, x * 2, '[');
-                mvaddch(y, x * 2 + 1, ']');
-                attroff(COLOR_PAIR(4));
-                continue;
-            }
             int tile = maze.maze[(realy * maze.width + realx) / 8];
             // int explored = maze.explored[(realy * maze.width + realx) / 8];
             int explored = 0;
