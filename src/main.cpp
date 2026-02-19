@@ -744,7 +744,7 @@ int main() {
     Player old_player = {0, 0};
 
     std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
-    Maze maze = generateMaze(32, 32);
+    Maze maze = generateMaze(6*8, 6*8);
     std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
     double millis = std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() / 1000.0;
     LOG("Took %lf ms to generate maze\n", millis);
@@ -848,6 +848,7 @@ int main() {
             // WASD are same as arrow but move double the distance
             // we do need to do a bit more collision checking
             case 'w':
+            case 'k':
                 if (player.y > 1) {
                     player.y -= 2;
                 }
@@ -856,6 +857,7 @@ int main() {
                 }
                 break;
             case 's':
+            case 'j':
                 if (player.y < maze.height - 2) {
                     player.y += 2;
                 }
@@ -864,6 +866,7 @@ int main() {
                 }
                 break;
             case 'a':
+            case 'h':
                 if (player.x > 1) {
                     player.x -= 2;
                 }
@@ -872,6 +875,7 @@ int main() {
                 }
                 break;
             case 'd':
+            case 'l':
                 if (player.x < maze.width - 2) {
                     player.x += 2;
                 }
